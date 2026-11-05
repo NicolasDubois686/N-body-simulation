@@ -79,9 +79,17 @@ def init_systeme_Plummer(systeme, nb_particules, M_tot, a, G):
         # Stockage dans la particule
         objet.position = np.array([x, y, z])
         objet.velocity = np.array([vx, vy, vz])
-        
+         
         # Ajout au systeme
         systeme.particles = np.append(systeme.particles, objet)
+    
+    # Centrage pour éviter une dérive grossière
+    # Recentrage pour éviter la convergence
+    centre_masse    = sum(liste_masse)*objet.position  / sum(liste_masse)
+    vitesse_moyenne = sum(liste_masse)*objet.velocity / sum(liste_masse)
+    for i in range(nb_particules):
+        systeme.particles[i].position -= centre_masse
+        systeme.particles[i].velocity -= vitesse_moyenne
     return
 
 def init_systeme_Kuzmin(nb_particules, dt, sftening):
