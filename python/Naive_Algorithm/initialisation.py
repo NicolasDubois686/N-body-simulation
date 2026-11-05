@@ -44,7 +44,7 @@ def init_systeme_Plummer(systeme, nb_particules, M_tot, a, G):
             radius   = int(liste_masse[i])
         )
         # génération de la position (r, theta, phi)
-        u1 = np.random.uniform(0, 1)
+        u1 = np.random.uniform(0.1, 1)
         r = a / np.sqrt(u1 ** (-2/3) - 1)
         
         # Orientation spatiale isotrope
