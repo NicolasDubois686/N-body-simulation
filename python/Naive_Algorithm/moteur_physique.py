@@ -40,7 +40,7 @@ def calculer_toutes_les_forces(systeme):
         objet_i = systeme.particles[i]
         for j in range(i+1, n) :
             objet_j = systeme.particles[j]
-            F_ij = calculer_force_paire(objet_i, objet_j, systeme.softening)
+            F_ij = calculer_force_paire(objet_i, objet_j, systeme.softening, systeme.G)
             objet_i.force += F_ij
             objet_j.force += -F_ij
             

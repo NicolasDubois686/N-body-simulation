@@ -28,7 +28,7 @@ Structure des Corps :
 LARGEUR = 1380
 HAUTEUR = 720
 DUREE   = 10000
-NB_PARTICLES = 15
+NB_PARTICLES = 35
 SUB_STEPS = 10
 
 ############################
@@ -52,7 +52,7 @@ systeme = n_body_system(
     particules = np.array([]),
     dt         = 0.05,
     softening  = 0.5,
-    G          = 1,
+    G          = 5,
     M_tot      = 10,
     a          = 15
 )
