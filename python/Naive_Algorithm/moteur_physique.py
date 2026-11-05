@@ -29,6 +29,15 @@ def calculer_force_paire(particule_A, particule_B, softening):
     force = facteur_force * r_ab
     return force
 
+def calculer_toutes_les_forces_sur_une_particule(systeme, particule):
+    n = len(systeme.particles)
+    for j in range(n):
+        objet_j = systeme.particles[j]
+        if particule.id != objet_j.id :
+            F_j = calculer_force_paire(particule, objet_j, systeme.softening)
+            particule.force += F_j
+    return
+
 def calculer_toutes_les_forces(systeme):
     """Double boucle imbriquée qui parcourt toutes les paires distinctes (i,j) pour faire la somme des forces subies par chaque particule
 
