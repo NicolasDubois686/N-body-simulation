@@ -70,7 +70,10 @@ t = 0
 while (t < DUREE and simulation_active) :
     for _ in range(SUB_STEPS):
         calculer_toutes_les_forces(systeme)
-        mettre_a_jour_position_et_vitesse(systeme)
+        leapfrog_demi_kick(systeme)
+        leapfrog_drift(systeme)
+        calculer_toutes_les_forces(systeme)
+        leapfrog_demi_kick(systeme)
         t += systeme.dt
     nb_in_screen = afficher_particules_3d(systeme, camera, ecran)
     clock.tick(60)
