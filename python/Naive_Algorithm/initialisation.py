@@ -85,8 +85,8 @@ def init_systeme_Plummer(systeme, nb_particules, M_tot, a, G):
     
     # Centrage pour éviter une dérive grossière
     # Recentrage pour éviter la convergence
-    centre_masse    = sum(liste_masse)*objet.position  / sum(liste_masse)
-    vitesse_moyenne = sum(liste_masse)*objet.velocity / sum(liste_masse)
+    centre_masse    = sum([liste_masse[i]*systeme.particles[i].position / M_tot for i in range(nb_particules)])
+    vitesse_moyenne = sum([liste_masse[i]*systeme.particles[i].velocity / M_tot for i in range(nb_particules)])
     for i in range(nb_particules):
         systeme.particles[i].position -= centre_masse
         systeme.particles[i].velocity -= vitesse_moyenne
