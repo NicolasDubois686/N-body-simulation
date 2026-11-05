@@ -35,7 +35,7 @@ def init_systeme_Plummer(systeme, nb_particules):
     G     = systeme.G
     a     = systeme.a
     
-    liste_alea = [np.random.uniform(0.5,100) for i in range(nb_particules)]
+    liste_alea = [np.random.uniform(0.1,1) for i in range(nb_particules)]
     tot = sum(liste_alea)
     liste_masse = [M_tot * (liste_alea[i] / tot) for i in range(nb_particules)]
         
