@@ -28,7 +28,7 @@ def init_systeme_Plummer(systeme, nb_particules, M_tot, a, G):
         softening (float): parametre d'adoucissement gravitationnel
     """
     
-    liste_alea = [int(np.random.uniform(0,100)) for i in range(nb_particules)]
+    liste_alea = [np.random.uniform(0.5,100) for i in range(nb_particules)]
     tot = sum(liste_alea)
     liste_masse = [M_tot * (liste_alea[i] / tot) for i in range(nb_particules)]
         
