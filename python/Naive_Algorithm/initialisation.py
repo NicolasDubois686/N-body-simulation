@@ -41,7 +41,7 @@ def init_systeme_Plummer(systeme, nb_particules, M_tot, a, G):
             velocity = np.zeros(3),
             mass     = liste_masse[i],
             id       = i,
-            radius   = int(liste_masse[i])
+            radius   = liste_masse[i]**(1/3)
         )
         # génération de la position (r, theta, phi)
         u1 = np.random.uniform(0.1, 1)
