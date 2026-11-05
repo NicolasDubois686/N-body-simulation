@@ -31,9 +31,6 @@ DUREE   = 10000
 NB_PARTICLES = 15
 SUB_STEPS = 10
 
-a = 15
-M_tot = 10
-
 ############################
 # Initialisation affichage #
 ############################
@@ -54,10 +51,13 @@ clock = pygame.time.Clock()
 systeme = n_body_system(
     particules = np.array([]),
     dt         = 0.05,
-    softening  = 0.5
+    softening  = 0.5,
+    G          = 1,
+    M_tot      = 10,
+    a          = 15
 )
 
-init_systeme_Plummer(systeme, NB_PARTICLES, M_tot, a, G)
+init_systeme_Plummer(systeme, NB_PARTICLES)
 
 #############################
 #     N-corps Algorithm     #

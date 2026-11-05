@@ -10,12 +10,15 @@ class Particle:
         self.radius   = radius
         
 class n_body_system:
-    def __init__(self, particules, dt, softening):
+    def __init__(self, particules, dt, softening, G, M_tot, a):
         self.particles = particules
         self.dt        = dt
         self.softening = softening
+        self.G         = G           # Constante gravitationnelle
+        self.M_tot     = M_tot
+        self.a         = a           # Rayon d'echelle de Plummer
 
-def init_systeme_Plummer(systeme, nb_particules, M_tot, a, G):
+def init_systeme_Plummer(systeme, nb_particules):
     """Alloue la mémoire nécessaire pour le tableau de particules avec la méthode de Plummer et définit les constantes physiques globales 
 
     Args:
@@ -27,6 +30,10 @@ def init_systeme_Plummer(systeme, nb_particules, M_tot, a, G):
         dt (float): pas de temps
         softening (float): parametre d'adoucissement gravitationnel
     """
+    
+    M_tot = systeme.M_tot
+    G     = systeme.G
+    a     = systeme.a
     
     liste_alea = [np.random.uniform(0.5,100) for i in range(nb_particules)]
     tot = sum(liste_alea)
