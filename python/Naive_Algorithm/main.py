@@ -67,9 +67,9 @@ afficher_particules_3d(systeme, camera, ecran)
 
 simulation_active = True
 t = 0
+calculer_toutes_les_forces(systeme)
 while (t < DUREE and simulation_active) :
     for _ in range(SUB_STEPS):
-        calculer_toutes_les_forces(systeme)
         leapfrog_demi_kick(systeme)
         leapfrog_drift(systeme)
         calculer_toutes_les_forces(systeme)
