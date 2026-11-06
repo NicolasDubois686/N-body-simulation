@@ -43,3 +43,17 @@ class TraceurTempsReel:
         for a in self.axes:
             a.set_xlabel("t")
         self.fig.tight_layout()
+        
+    def ajouter(self, t, d):
+        eps = 1e-18 # Pour éviter log(0)
+        self.t.append(t)
+        D = self.data
+        D["K"].append(d["K"])
+        D["U"].append(d["U"])
+        D["E"].append(d["E"])
+        D["dE"].append(abs(d["E"] - self.d0["E"]) / abs(self.d0["E"]) + eps)
+        D["P"].append(np.linalg.norm(d["P"]) + eps)
+        D["dL"].append(np.linalg.norm(d["L"] - self.d0["L"]) + eps)
+        D["com"].append(np.linalg.norm(d["com"]) + eps)
+        D["virial"].append(d["virial"])
+        
