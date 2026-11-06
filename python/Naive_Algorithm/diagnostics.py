@@ -17,7 +17,7 @@ def diagnostics(systeme) :
         # Energie potentielle (avec le même softening que la force)
     diff = pos[:, None, :] - pos[None, :, :]                    
     d = np.sqrt((diff**2).sum(-1) + eps**2)                   
-    iu = np.tiu_indices(len(m), 1)                            
+    iu = np.triu_indices(len(m), 1)                            
     U = -G * np.sum((m[:, None] * m[None, :])[iu] / d[iu])
     
     # Impulsion totale

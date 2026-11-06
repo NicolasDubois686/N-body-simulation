@@ -30,7 +30,7 @@ Structure des Corps :
 LARGEUR = 1380
 HAUTEUR = 720
 DUREE   = 10000
-NB_PARTICLES = 35
+NB_PARTICLES = 15
 SUB_STEPS = 10
 
 ############################

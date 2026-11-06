@@ -35,7 +35,7 @@ class TraceurTempsReel:
         a3.legend()
         
         # Virial
-        self.l_vir, = a4.plot([], [])
+        self.l_virial, = a4.plot([], [])
         a4.axhline(1, color="gray", ls="--", lw=0.8)
         a4.set_title("Virial = 2K/|U|")
         
@@ -60,14 +60,14 @@ class TraceurTempsReel:
     def rafraichir(self):
         if not plt.fignum_exists(self.fig.number):
             return # fenêtre fermée par l'utilisateur
-        for ligne, cle in ((self.l_K, "K"),     (self.l_U, "U"),           (self.l_E, "EK"),
+        for ligne, cle in ((self.l_K, "K"),     (self.l_U, "U"),           (self.l_E, "E"),
                            (self.l_dE, "dE"),   (self.l_P, "P"),           (self.l_dL, "dL"),
                            (self.l_com, "com"), (self.l_virial, "virial")):
             ligne.set_data(self.t, self.data[cle])
         for a in self.axes:
             a.relim()
             a.autoscale_view()
-        self.fig.canvac.draw_idle()
+        self.fig.canvas.draw_idle()
         self.fig.canvas.flush_events() # Traite les événements sans bloquer
         
     def fermer(self):
