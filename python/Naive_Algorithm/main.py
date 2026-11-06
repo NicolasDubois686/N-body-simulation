@@ -1,9 +1,10 @@
 import numpy as np
 from initialisation import *
 from affichage_simulation import *
-from affichage_diagnostics import *
 from moteur_physique import *
 from integrateur_numerique import *
+from diagnostics import *
+from affichage_diagnostics import *
 
 """
 Structure des données Particules 
@@ -60,6 +61,14 @@ systeme = n_body_system(
 
 init_systeme_Plummer(systeme, NB_PARTICLES)
 
+################################
+# Initialisation diagnostiques #
+################################
+
+d0 = diagnostics(systeme)
+traceur = TraceurTempsReel(d0)
+frame = 0
+
 #############################
 #     N-corps Algorithm     #
 #############################
@@ -70,13 +79,22 @@ simulation_active = True
 t = 0
 calculer_toutes_les_forces(systeme)
 while (t < DUREE and simulation_active) :
+    
     for _ in range(SUB_STEPS):
+        t += systeme.dt
         leapfrog_demi_kick(systeme)
         leapfrog_drift(systeme)
         calculer_toutes_les_forces(systeme)
         leapfrog_demi_kick(systeme)
         t += systeme.dt
+        
     nb_in_screen = afficher_particules_3d(systeme, camera, ecran)
+    
+    traceur.ajouter(t, diagnostics(systeme))
+    frame += 1
+    if frame % 5 == 0 :
+        traceur.rafraichir()
+    
     clock.tick(60)
     if nb_in_screen <= 2 * NB_PARTICLES / 3 :
         simulation_active = False
@@ -87,4 +105,9 @@ while (t < DUREE and simulation_active) :
             if event.key == pygame.K_q :
                 simulation_active = False
 
+#############
+# Fermeture #
+#############
+
 pygame.quit()
+traceur.fermer()
