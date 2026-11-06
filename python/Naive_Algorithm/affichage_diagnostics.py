@@ -1,0 +1,45 @@
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+
+matplotlib.use("TkAgg")
+
+class TraceurTempsReel:
+    def __init__(self, d0):
+        self.d0 = d0
+        self.t, self.data = [], {k: [] for k in 
+            ("K", "U", "E", "dE", "P", "dL", "com", "virial")}
+        
+        plt.ion()
+        self.fig, ((a1, a2), (a3, a4)) = plt.subplots(2, 2, figsize=(11, 7))
+        self.fig.canvas.manager.set_window_title("Diagnostics N-corps")
+        
+        # Energies
+        self.l_K, = a1.plot([], [], label="K")
+        self.l_U, = a1.plot([], [], label="U")
+        self.l_E, = a1.plot([], [], label="E = K+U")
+        a1.set_title("Energies")
+        a1.legend()
+        
+        # Dérive relative de l'énergie
+        self.l_dE, = a2.plot([], [])
+        a2.set_title("|ΔE / E₀|")
+        a2.set_yscale("log")
+        
+        # Impulsion, moment cinétique, centre de masse
+        self.l_P,   = a3.plot([], [], label="‖P‖")
+        self.l_dL,  = a3.plot([], [], label="‖L - L₀‖")
+        self.l_com, = a3.plot([], [], label="‖com‖")
+        a3.set_title("Grandeurs conservées")
+        a3.set_yscale("log")
+        a3.legend()
+        
+        # Virial
+        self.l_vir, = a4.plot([], [])
+        a4.axhline(1, color="gray", ls="--", lw=0.8)
+        a4.set_title("Virial = 2K/|U|")
+        
+        self.axes = (a1, a2, a3, a4)
+        for a in self.axes:
+            a.set_xlabel("t")
+        self.fig.tight_layout()
