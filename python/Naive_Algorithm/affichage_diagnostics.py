@@ -69,3 +69,6 @@ class TraceurTempsReel:
             a.autoscale_view()
         self.fig.canvac.draw_idle()
         self.fig.canvas.flush_events() # Traite les événements sans bloquer
+        
+    def fermer(self):
+        plt.clode(self.fig)
