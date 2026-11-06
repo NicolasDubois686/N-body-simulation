@@ -1,6 +1,7 @@
 import numpy as np
 from initialisation import *
-from affichage import *
+from affichage_simulation import *
+from affichage_diagnostics import *
 from moteur_physique import *
 from integrateur_numerique import *
 
