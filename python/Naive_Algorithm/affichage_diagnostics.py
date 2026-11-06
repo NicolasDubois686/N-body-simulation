@@ -57,3 +57,15 @@ class TraceurTempsReel:
         D["com"].append(np.linalg.norm(d["com"]) + eps)
         D["virial"].append(d["virial"])
         
+    def rafraichir(self):
+        if not plt.fignum_exists(self.fig.number):
+            return # fenêtre fermée par l'utilisateur
+        for ligne, cle in ((self.l_K, "K"),     (self.l_U, "U"),           (self.l_E, "EK"),
+                           (self.l_dE, "dE"),   (self.l_P, "P"),           (self.l_dL, "dL"),
+                           (self.l_com, "com"), (self.l_virial, "virial")):
+            ligne.set_data(self.t, self.data[cle])
+        for a in self.axes:
+            a.relim()
+            a.autoscale_view()
+        self.fig.canvac.draw_idle()
+        self.fig.canvas.flush_events() # Traite les événements sans bloquer
