@@ -2,6 +2,7 @@ import numpy as np
 import pygame
 import os
 import re
+import imageio.v2 as imageio
 
 def capture_frame(ecran):
     """Renvoie l'image courante de la fenêtre Pygame (H, L, 3) en uint8"""
@@ -30,3 +31,20 @@ def nom_fichier_gif(systeme, n_particules, prefixe="naif", dossier="assets", ext
     suivant = max(numeros, default=0) + 1
     
     return os.path.join(dossier, f"{base}_{suivant:03d}.gif")
+
+def ask_for_save(frames, fps, chemin):
+    if not frames:
+        print("Aucune frame capturée")
+        return
+    
+    taille_mo = sum(f.nbytes for f in frames) / 1e6
+    print(f"{len(frames)} images capturées (~{taille_mo:.0f} Mo en mémoire).")
+    
+    reponse = input(f"Enregistrer sous {chemin} ? [o/N] ").strip().lower()
+    if reponse not in ("o", "oui", "y", "yes"):
+        print("GIF non enregistré.")
+        return
+    
+    imageio.mimsave(chemin, frames, fps=fps, loop=0)
+    print(f"Enregistré : {chemin} ({os.path.getsize(chemin) / 1e6:.1f} Mo)")
+    
