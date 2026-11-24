@@ -91,6 +91,7 @@ n_affichage = 0
 
 afficher_particules_3d(systeme, camera, ecran)
 
+nb_pas = 0
 simulation_active = True
 t = 0
 calculer_toutes_les_forces(systeme)
@@ -103,6 +104,7 @@ while (t < DUREE and simulation_active) :
         calculer_toutes_les_forces(systeme)
         leapfrog_demi_kick(systeme)
         t += systeme.dt/2
+        nb_pas += 1
         
     nb_in_screen = afficher_particules_3d(systeme, camera, ecran)
     
@@ -146,10 +148,10 @@ ask_for_save(traceur.images, fps=10, chemin=chemin_diag, answer=True)
 #   N-corps Algorithm Not Save   #
 ##################################
 
-simulation_active = True
+nb_pas_copy = 0
 t = 0
 calculer_toutes_les_forces(systeme_copy)
-while (t < DUREE and simulation_active) :
+while (t < DUREE and simulation_active and nb_pas_copy < nb_pas) :
     
     for _ in range(SUB_STEPS):
         t += systeme_copy.dt/2
@@ -158,11 +160,25 @@ while (t < DUREE and simulation_active) :
         calculer_toutes_les_forces(systeme_copy)
         leapfrog_demi_kick(systeme_copy)
         t += systeme_copy.dt/2
+        nb_pas_copy += 1
         
-    nb_in_screen = afficher_particules_3d(systeme_copy, camera, ecran)
-
     if nb_in_screen <= 2 * NB_PARTICLES / 3 :
         simulation_active = False
         
 pygame.display.quit()
 pygame.quit()
+
+########################
+# Vérification égalité #
+########################
+
+def etat(s):
+    P = s.particles
+    return (np.array([p.position for p in P]),
+            np.array([p.velocity for p in P]))
+
+pos_a, vel_a = etat(systeme)
+pos_b, vel_b = etat(systeme_copy)
+
+assert np.array_equal(pos_a, pos_b), "positions différentes"
+assert np.array_equal(vel_a, vel_b), "vitesses différentes"
