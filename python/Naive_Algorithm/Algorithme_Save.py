@@ -132,9 +132,9 @@ pygame.quit()
 
 # Simulation
 chemin_sim = nom_fichier_gif(systeme, NB_PARTICLES, prefixe="naif_simulation")
-ask_for_save(frames, fps=30, chemin=chemin_sim)
+ask_for_save(frames, fps=30, chemin=chemin_sim, answer=True)
 
 # Graphes 
 chemin_diag = nom_fichier_gif(systeme, NB_PARTICLES, prefixe="naif_diagnostics")
-ask_for_save(traceur.images, fps=10, chemin=chemin_diag)
+ask_for_save(traceur.images, fps=10, chemin=chemin_diag, answer=True)
 

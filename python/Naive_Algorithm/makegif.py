@@ -33,22 +33,22 @@ def nom_fichier_gif(systeme, n_particules, prefixe="naif", dossier="assets", ext
     
     return os.path.join(dossier, f"{base}_{suivant:03d}.gif")
 
-def ask_for_save(frames, fps, chemin):
+def ask_for_save(frames, fps, chemin, answer=False):
     if not frames:
         print("Aucune frame capturée")
         return
     
     taille_mo = sum(f.nbytes for f in frames) / 1e6
     print(f"{len(frames)} images capturées (~{taille_mo:.0f} Mo en mémoire).")
-    
-    def demander(question):
-        print(question, end="", flush=True)
-        return sys.stdin.readline().strip().lower()
-    
-    reponse = demander(f"Enregistrer sous {chemin} ? [o/N] ")
-    if reponse not in ("o", "oui", "y", "yes"):
-        print("GIF non enregistré.")
-        return
+    if answer == False :
+        def demander(question):
+            print(question, end="", flush=True)
+            return sys.stdin.readline().strip().lower()
+        
+        reponse = demander(f"Enregistrer sous {chemin} ? [o/N] ")
+        if reponse not in ("o", "oui", "y", "yes"):
+            print("GIF non enregistré.")
+            return
     
     imageio.mimsave(chemin, frames, fps=fps, loop=0)
     print(f"Enregistré : {chemin} ({os.path.getsize(chemin) / 1e6:.1f} Mo)")
