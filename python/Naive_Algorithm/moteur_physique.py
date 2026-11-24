@@ -32,16 +32,15 @@ def calculer_toutes_les_forces(systeme):
     Args:
         systeme (n_body_system): état courant du système
     """
-    # Remise à 0 des forces subies
-    reinitialiser_forces(systeme)
-    
-    n = len (systeme.particles)
-    for i in range(n) : 
-        objet_i = systeme.particles[i]
-        for j in range(i+1, n) :
-            objet_j = systeme.particles[j]
-            F_ij = calculer_force_paire(objet_i, objet_j, systeme.softening, systeme.G)
-            objet_i.force += F_ij
-            objet_j.force += -F_ij
-            
-    return 
+    P = systeme.particles
+    pos = np.array([p.position for p in P])
+    m   = np.array([p.mass for p in P])
+
+    diff = pos[None, :, :] - pos[:, None, :]          
+    d2 = (diff**2).sum(-1) + systeme.softening**2
+    inv_d3 = d2 ** -1.5
+    np.fill_diagonal(inv_d3, 0.0)                     
+
+    F = systeme.G * m[:, None] * (diff * (m[None, :, None] * inv_d3[:, :, None])).sum(axis=1)
+    for p, f in zip(P, F):
+        p.force = f
