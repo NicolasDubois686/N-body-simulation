@@ -103,7 +103,7 @@ while (t < DUREE and simulation_active) :
     # GIF
     n_affichage += 1 
     if n_affichage % CAPTURE_EVERY == 0 :
-        frames.append(capture_frame(ecran)[::2, ::2])
+        frames.append(np.ascontiguousarray(capture_frame(ecran)[::2, ::2]))
     
     # Diagnostics
     traceur.ajouter(t, diagnostics(systeme))
