@@ -31,7 +31,7 @@ Structure des Corps :
 
 LARGEUR = 1380
 HAUTEUR = 720
-DUREE   = 100
+DUREE   = 10
 NB_PARTICLES = 2
 SUB_STEPS = 10
 
@@ -63,6 +63,12 @@ systeme = n_body_system(
 
 init_systeme_Plummer(systeme, NB_PARTICLES)
 
+#######################################################
+# Copie du systeme pour avoir les données temporelles #
+#######################################################
+
+systeme_copy = systeme.copy()
+
 ################################
 # Initialisation diagnostiques #
 ################################
@@ -79,9 +85,9 @@ frames = []
 CAPTURE_EVERY = 2
 n_affichage = 0
 
-#############################
-#     N-corps Algorithm     #
-#############################
+##############################
+#   N-corps Algorithm Save   #
+##############################
 
 afficher_particules_3d(systeme, camera, ecran)
 
@@ -127,8 +133,6 @@ while (t < DUREE and simulation_active) :
 #############
 
 traceur.fermer()
-pygame.display.quit()
-pygame.quit()
 
 # Simulation
 chemin_sim = nom_fichier_gif(systeme, NB_PARTICLES, prefixe="naif_simulation")
@@ -138,3 +142,27 @@ ask_for_save(frames, fps=30, chemin=chemin_sim, answer=True)
 chemin_diag = nom_fichier_gif(systeme, NB_PARTICLES, prefixe="naif_diagnostics")
 ask_for_save(traceur.images, fps=10, chemin=chemin_diag, answer=True)
 
+##################################
+#   N-corps Algorithm Not Save   #
+##################################
+
+simulation_active = True
+t = 0
+calculer_toutes_les_forces(systeme_copy)
+while (t < DUREE and simulation_active) :
+    
+    for _ in range(SUB_STEPS):
+        t += systeme_copy.dt/2
+        leapfrog_demi_kick(systeme_copy)
+        leapfrog_drift(systeme_copy)
+        calculer_toutes_les_forces(systeme_copy)
+        leapfrog_demi_kick(systeme_copy)
+        t += systeme_copy.dt/2
+        
+    nb_in_screen = afficher_particules_3d(systeme_copy, camera, ecran)
+
+    if nb_in_screen <= 2 * NB_PARTICLES / 3 :
+        simulation_active = False
+        
+pygame.display.quit()
+pygame.quit()

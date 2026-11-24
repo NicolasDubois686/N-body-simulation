@@ -9,6 +9,12 @@ class Particle:
         self.id       = id
         self.radius   = radius
         
+    def copy(self):
+        p = Particle(self.position.copy(), self.velocity.copy(),
+                     self.mass, self.id, self.radius)
+        p.force = self.force.copy()
+        return p
+        
 class n_body_system:
     def __init__(self, particules, dt, softening, G, M_tot, a):
         self.particles = particules
@@ -17,6 +23,13 @@ class n_body_system:
         self.G         = G           # Constante gravitationnelle
         self.M_tot     = M_tot
         self.a         = a           # Rayon d'echelle de Plummer
+        
+    def copy(self):
+        return n_body_system(
+            particules = np.array([p.copy() for p in self.particles]),
+            dt = self.dt, softening = self.softening,
+            G = self.G, M_tot = self.M_tot, a = self.a,
+        )
 
 def init_systeme_Plummer(systeme, nb_particules):
     """Alloue la mémoire nécessaire pour le tableau de particules avec la méthode de Plummer et définit les constantes physiques globales 
