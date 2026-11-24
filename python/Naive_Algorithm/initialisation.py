@@ -38,9 +38,6 @@ def init_systeme_Plummer(systeme, nb_particules):
     liste_alea = [np.random.uniform(0.1,1) for i in range(nb_particules)]
     tot = sum(liste_alea)
     liste_masse = [M_tot * (liste_alea[i] / tot) for i in range(nb_particules)]
-        
-    
-    masse_particule = M_tot / nb_particules
     
     for i in range(nb_particules):
         objet = Particle(
@@ -51,7 +48,7 @@ def init_systeme_Plummer(systeme, nb_particules):
             radius   = liste_masse[i]**(1/3)
         )
         # génération de la position (r, theta, phi)
-        u1 = np.random.uniform(0, 0.99)
+        u1 = np.random.uniform(0, 0.9)
         r = a / np.sqrt(u1 ** (-2/3) - 1)
         
         # Orientation spatiale isotrope
