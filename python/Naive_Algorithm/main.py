@@ -91,12 +91,12 @@ calculer_toutes_les_forces(systeme)
 while (t < DUREE and simulation_active) :
     
     for _ in range(SUB_STEPS):
-        t += systeme.dt
+        t += systeme.dt/2
         leapfrog_demi_kick(systeme)
         leapfrog_drift(systeme)
         calculer_toutes_les_forces(systeme)
         leapfrog_demi_kick(systeme)
-        t += systeme.dt
+        t += systeme.dt/2
         
     nb_in_screen = afficher_particules_3d(systeme, camera, ecran)
     
