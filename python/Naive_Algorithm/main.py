@@ -7,32 +7,17 @@ from diagnostics import *
 from affichage_diagnostics import *
 from makegif import *
 import imageio.v2 as imageio
+import time
 
-"""
-Structure des données Particules 
-   - position : Vecteur3D (x, y, z)
-   - vitesse  : Vecteur3D (vx; vy, vz)
-   - force    : Vecteur3D (fx, fy, fz)
-   - masse    : float
-   - id       : int
-
-Structure des Corps : 
-    - particules        : Tableau de particules
-    - nb_particules     : int
-    - dt (pas de temps) : float
-    - softening         : float (parametre d'adoucissement gravitationnel)
-
-
-"""
-        
+       
 #############################
 # Définition des constantes #
 #############################
 
 LARGEUR = 1380
 HAUTEUR = 720
-DUREE   = 10
-NB_PARTICLES = 2
+DUREE   = 100
+NB_PARTICLES = 10
 SUB_STEPS = 10
 
 ############################
@@ -148,6 +133,8 @@ ask_for_save(traceur.images, fps=10, chemin=chemin_diag, answer=True)
 #   N-corps Algorithm Not Save   #
 ##################################
 
+# Performances temporelles
+t0 = time.perf_counter()
 nb_pas_copy = 0
 t = 0
 calculer_toutes_les_forces(systeme_copy)
@@ -164,7 +151,14 @@ while (t < DUREE and simulation_active and nb_pas_copy < nb_pas) :
         
     if nb_in_screen <= 2 * NB_PARTICLES / 3 :
         simulation_active = False
-        
+
+duree = time.perf_counter() - t0
+
+print()
+print(f"{nb_pas} pas en {duree:.3f} s "
+      f"({1e3 * duree / nb_pas:.3f} ms/pas)")
+print()
+
 pygame.display.quit()
 pygame.quit()
 
