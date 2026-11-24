@@ -129,6 +129,9 @@ ask_for_save(frames, fps=30, chemin=chemin_sim, answer=True)
 chemin_diag = nom_fichier_gif(systeme, NB_PARTICLES, prefixe="naif_diagnostics")
 ask_for_save(traceur.images, fps=10, chemin=chemin_diag, answer=True)
 
+pygame.display.quit()
+pygame.quit()
+
 ##################################
 #   N-corps Algorithm Not Save   #
 ##################################
@@ -158,9 +161,6 @@ print()
 print(f"{nb_pas} pas en {duree:.3f} s "
       f"({1e3 * duree / nb_pas:.3f} ms/pas)")
 print()
-
-pygame.display.quit()
-pygame.quit()
 
 ########################
 # Vérification égalité #
