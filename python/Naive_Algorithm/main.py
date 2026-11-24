@@ -5,6 +5,8 @@ from moteur_physique import *
 from integrateur_numerique import *
 from diagnostics import *
 from affichage_diagnostics import *
+from makegif import *
+import imageio.v2 as imageio
 
 """
 Structure des données Particules 
@@ -29,8 +31,8 @@ Structure des Corps :
 
 LARGEUR = 1380
 HAUTEUR = 720
-DUREE   = 10000
-NB_PARTICLES = 15
+DUREE   = 100
+NB_PARTICLES = 2
 SUB_STEPS = 10
 
 ############################
@@ -69,6 +71,14 @@ d0 = diagnostics(systeme)
 traceur = TraceurTempsReel(d0)
 frame = 0
 
+#########################
+# Initialisation du GIF #
+#########################
+
+frames = []
+CAPTURE_EVERY = 2
+n_affichage = 0
+
 #############################
 #     N-corps Algorithm     #
 #############################
@@ -90,10 +100,17 @@ while (t < DUREE and simulation_active) :
         
     nb_in_screen = afficher_particules_3d(systeme, camera, ecran)
     
+    # GIF
+    n_affichage += 1 
+    if n_affichage % CAPTURE_EVERY == 0 :
+        frames.append(capture_frame(ecran)[::2, ::2])
+    
+    # Diagnostics
     traceur.ajouter(t, diagnostics(systeme))
     frame += 1
     if frame % 5 == 0 :
         traceur.rafraichir()
+        traceur.capturer_frame()
     
     clock.tick(60)
     if nb_in_screen <= 2 * NB_PARTICLES / 3 :
@@ -109,5 +126,15 @@ while (t < DUREE and simulation_active) :
 # Fermeture #
 #############
 
-pygame.quit()
 traceur.fermer()
+pygame.display.quit()
+pygame.quit()
+
+# Simulation
+chemin_sim = nom_fichier_gif(systeme, NB_PARTICLES, prefixe="naif_simulation")
+ask_for_save(frames, fps=30, chemin=chemin_sim)
+
+# Graphes 
+chemin_diag = nom_fichier_gif(systeme, NB_PARTICLES, prefixe="naif_diagnostics")
+ask_for_save(traceur.images, fps=10, chemin=chemin_diag)
+

@@ -44,6 +44,15 @@ class TraceurTempsReel:
             a.set_xlabel("t")
         self.fig.tight_layout()
         
+        # Image
+        self.images = []
+        
+    def capturer_frame(self):
+        """Capture la figure et la stocke dans self.images"""
+        self.fig.canvas.draw()
+        buf = np.asarray(self.fig.canvas.buffer_rgba())
+        self.images.append(buf[:, :, :3].copy())        
+        
     def ajouter(self, t, d):
         eps = 1e-18 # Pour éviter log(0)
         self.t.append(t)
@@ -71,4 +80,7 @@ class TraceurTempsReel:
         self.fig.canvas.flush_events() # Traite les événements sans bloquer
         
     def fermer(self):
-        plt.clode(self.fig)
+        if plt.fignum_exists(self.fig.number):
+            self.fig.canvas.flush_events()
+            plt.close(self.fig)
+        plt.close("all")
